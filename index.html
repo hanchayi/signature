@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="module">
+    import Signature from './dist/es/index.js';
+    console.log('signature', Signature)
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const signature = new Signature(document.getElementById('signature'))
+      document.getElementById('destroy').addEventListener('click', () => {
+        signature.destroy()
+      })
+    })
+  </script>
+</head>
+<body>
+  <canvas id="signature"></canvas>
+  <button id="destroy">destroy</button>
+</body>
+</html>
