@@ -1,10 +1,6 @@
 import { a } from './test'
 
 export default class Signature {
-  /**
-   * canvas元素
-   * @param {HTMLCanvasElement} canvas
-   */
   constructor(canvas) {
     this.state = ''
     if (!canvas) {
@@ -28,10 +24,19 @@ export default class Signature {
     this.context.moveTo(startPoint.x, startPoint.y)
     this.addEventListener(this.canvas, 'mousemove', (e) => {
       const point = this.getEventPoint(e)
-      console.log('mousemove', point)
-      this.context.lineTo(point.x, point.y)
-      this.context.stroke()
+      this.debug('mousemove', point)
+      this.draw(point)
     })
+    this.addEventListener(this.canvas, 'touchmove', (e) => {
+      const point = this.getEventPoint(e)
+      this.debug('touchmove', e)
+      this.draw(point)
+    })
+  }
+
+  draw(point) {
+    this.context.lineTo(point.x, point.y)
+    this.context.stroke()
   }
 
   stopDraw() {
@@ -44,6 +49,15 @@ export default class Signature {
   }
 
   getEventPoint(e) {
+    // 兼容移动端
+    if (e instanceof TouchEvent) {
+      const rect = this.canvas.getBoundingClientRect()
+      return {
+        x: e.targetTouches[0].clientX - rect.left,
+        y: e.targetTouches[0].clientY - rect.top
+      }
+    }
+
     return {
       x: e.offsetX,
       y: e.offsetY
@@ -56,11 +70,23 @@ export default class Signature {
 
   initListeners() {
     this.addEventListener(this.canvas, 'mousedown', (e) => {
-      console.log('mousedown', e)
+      e.preventDefault()
+      this.debug('mousedown', e)
       this.startDraw(this.getEventPoint(e))
     })
-    this.addEventListener(document, 'mouseup', () => {
-      console.log('mouseup')
+    this.addEventListener(this.canvas, 'touchstart', (e) => {
+      e.preventDefault()
+      this.debug('touchstart', e)
+      this.startDraw(this.getEventPoint(e))
+    })
+    this.addEventListener(document, 'mouseup', (e) => {
+      this.debug('mouseup', e)
+      e.preventDefault()
+      this.stopDraw()
+    })
+    this.addEventListener(this.canvas, 'touchend', (e) => {
+      e.preventDefault()
+      this.debug('touchend', e)
       this.stopDraw()
     })
   }
@@ -86,6 +112,10 @@ export default class Signature {
       target.removeEventListener(event, listener)
       this.listeners.splice(i, 1)
     }
+  }
+
+  debug(...args) {
+    console.log(...args)
   }
 
   destroy() {
