@@ -9,15 +9,20 @@
     console.log('signature', Signature)
 
     document.addEventListener('DOMContentLoaded', () => {
-      const signature = new Signature(document.getElementById('signature'))
+      let signature = new Signature(document.getElementById('signature'))
       document.getElementById('destroy').addEventListener('click', () => {
-        signature.destroy()
+        if (signature) {
+          signature.destroy()
+          signature = null
+        } else {
+          alert('has destroyed')
+        }
       })
     })
   </script>
 </head>
-<body>
-  <canvas id="signature"></canvas>
+<body style="background-color: bisque;position: relative;">
+  <canvas id="signature" style="position: absolute;left: 50px; top: 50px;background-color: aqua;"></canvas>
   <button id="destroy">destroy</button>
 </body>
 </html>
