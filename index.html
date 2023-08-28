@@ -10,6 +10,13 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       let signature = new Signature(document.getElementById('signature'))
+      document.getElementById('clear').addEventListener('click', () => {
+        signature.clear()
+      })
+      document.getElementById('getBase64').addEventListener('click', () => {
+        alert(signature.getBase64())
+        document.body.appendChild(signature.getImage())
+      })
       document.getElementById('destroy').addEventListener('click', () => {
         if (signature) {
           signature.destroy()
@@ -22,8 +29,10 @@
   </script>
 </head>
 <body style="background-color: bisque;position: relative;">
-  <canvas id="signature" style="position: absolute;left: 50px; top: 50px;background-color: aqua;"></canvas>
+  <canvas id="signature" style="border: 1px solid;"></canvas>
   <button id="destroy">destroy</button>
+  <button id="clear">clear</button>
+  <button id="getBase64">getBase64</button>
 
   <div>
     <a href="https://github.com/linjc/smooth-signature/blob/master/src/index.ts#L112">smooth</a>

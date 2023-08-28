@@ -1,5 +1,3 @@
-import { a } from './test'
-
 export default class Signature {
   constructor(canvas) {
     this.state = ''
@@ -46,6 +44,20 @@ export default class Signature {
 
     this.removeEventListeners('mousemove')
     this.state = ''
+  }
+
+  clear() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
+  getBase64() {
+    return this.canvas.toDataURL()
+  }
+
+  getImage() {
+    let image = new Image()
+    image.src = this.getBase64()
+    return image
   }
 
   getEventPoint(e) {
