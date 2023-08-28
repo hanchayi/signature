@@ -1,7 +1,13 @@
 export default {
 	input: 'src/index.js',
-	output: {
-		file: 'bundle.js',
-		format: 'cjs'
-	}
+	output: [
+    {
+      dir: 'dist/cjs',
+      format: 'cjs'
+    },
+    {
+      dir: 'dist/es',
+      format: 'es'
+    }
+  ]
 };
